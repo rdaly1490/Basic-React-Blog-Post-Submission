@@ -32612,6 +32612,11 @@ var comments = new CommentCollection([{
 	createdAt: 2
 }]);
 
+function newComment(commentModel) {
+	comments.add(commentModel);
+	console.log('comment added');
+};
+
 module.exports = React.createClass({
 	displayName: 'exports',
 
@@ -32660,7 +32665,7 @@ module.exports = React.createClass({
 					postModel.get('category')
 				),
 				React.createElement(Counter, null),
-				React.createElement(CommentFormComponent, null),
+				React.createElement(CommentFormComponent, { newComment: newComment }),
 				React.createElement(
 					'div',
 					null,
@@ -32731,7 +32736,7 @@ module.exports = React.createClass({
 		if (!comment.isValid()) {
 			console.log(comment.validationError);
 		} else {
-			console.log(comment);
+			this.props.newComment(comment);
 		}
 	}
 
@@ -32747,6 +32752,9 @@ var CommentCollection = require("../collections/CommentCollection");
 module.exports = React.createClass({
 	displayName: "exports",
 
+	componentWillMount: function componentWillMount() {
+		this.props.comments.on("add", this.commentAdded);
+	},
 	render: function render() {
 
 		var commentElements = this.props.comments.map(function (commentModel) {
@@ -32761,6 +32769,9 @@ module.exports = React.createClass({
 			null,
 			commentElements
 		);
+	},
+	commentAdded: function commentAdded(postModel) {
+		this.forceUpdate();
 	}
 
 });
@@ -32804,23 +32815,10 @@ var BlogFormComponent = require('./components/BlogFormComponent');
 var CounterComponent = require('./components/CounterComponent');
 var CommentFormComponent = require('./components/CommentFormComponent');
 var CommentListComponent = require('./components/CommentListComponent');
-// var CommentCollection = require('./collections/BlogPostCollection');
 
 var Backbone = require('backbone');
 Backbone.$ = require('jquery');
 
-// var comments = new CommentCollection([
-// 	{
-// 		text:"hi",
-// 		userId:1,
-// 		createdAt:1
-// 	},
-// 	{
-// 		text:"there",
-// 		userId:2,
-// 		createdAt:2
-// 	}
-// ]);
 var blogPosts = new BlogPostCollection([{
 	title: 'Breaking news! React is awesome :)',
 	body: 'Lorem ipsum Id exercitation voluptate sunt officia aliquip labore sed ullamco in id culpa sit non aute deserunt velit laborum minim nulla dolore voluptate consectetur non proident sint sunt magna commodo occaecat anim eiusmod adipisicing incididunt velit aliqua dolore consequat.',
@@ -32860,10 +32858,11 @@ var blogPosts = new BlogPostCollection([{
 }]);
 
 var allCategories = ['react', 'javascript', 'html', 'css'];
+
 function newPost(postModel) {
 	console.log('newPost was run');
 	blogPosts.add(postModel);
-}
+};
 
 var App = Backbone.Router.extend({
 	routes: {

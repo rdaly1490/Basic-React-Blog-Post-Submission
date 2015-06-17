@@ -19,6 +19,11 @@ var comments = new CommentCollection([
 	}
 ]);
 
+function newComment(commentModel) {
+	comments.add(commentModel);
+	console.log("comment added");
+};
+
 module.exports = React.createClass({
 	componentWillMount: function() {
 		this.props.posts.on('add', this.postAdded);
@@ -50,7 +55,7 @@ module.exports = React.createClass({
 					<p>{postModel.get('body')}</p>
 					<div>{postModel.get('createdAt').toString()} | {postModel.get('category')}</div>
 					<Counter />
-					<CommentFormComponent />
+					<CommentFormComponent newComment={newComment}/>
 					<div><CommentListComponent comments={comments}/></div>
 				</div>
 			)

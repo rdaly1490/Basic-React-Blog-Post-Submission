@@ -24,7 +24,7 @@ module.exports = React.createClass({
 			console.log(comment.validationError);
 		}
 		else {
-			console.log(comment);
+			this.props.newComment(comment);
 		}
 
 	}

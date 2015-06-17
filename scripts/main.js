@@ -5,23 +5,10 @@ var BlogFormComponent = require('./components/BlogFormComponent');
 var CounterComponent = require('./components/CounterComponent');
 var CommentFormComponent = require('./components/CommentFormComponent');
 var CommentListComponent = require('./components/CommentListComponent');
-// var CommentCollection = require('./collections/BlogPostCollection');
 
 var Backbone = require("backbone");
 Backbone.$ = require("jquery");
 
-// var comments = new CommentCollection([
-// 	{
-// 		text:"hi",
-// 		userId:1,
-// 		createdAt:1
-// 	},
-// 	{
-// 		text:"there",
-// 		userId:2,
-// 		createdAt:2
-// 	}
-// ]);
 var blogPosts = new BlogPostCollection([
 	{
 		title: 'Breaking news! React is awesome :)',
@@ -68,10 +55,11 @@ var blogPosts = new BlogPostCollection([
 ]);
 
 var allCategories = ['react', 'javascript', 'html', 'css'];
+
 function newPost(postModel) {
 	console.log('newPost was run');
 	blogPosts.add(postModel);
-}
+};
 
 var App = Backbone.Router.extend({
 	routes: {
@@ -82,6 +70,7 @@ var App = Backbone.Router.extend({
 
 	login: function() {
 		React.render(
+
 			<h1>Login Page</h1>,
 			document.getElementById('container')
 		);
